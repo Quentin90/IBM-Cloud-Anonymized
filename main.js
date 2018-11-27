@@ -1,6 +1,7 @@
 var fs = require('fs');
 // file is included here:
 const util = require('util');
+const csv = require('fast-csv');
 const dateHelper = require('./dateHelper');
 const cosHelper = require('./cosHelper');
 const csvHelper = require('./csvHelper');
@@ -38,6 +39,15 @@ const csvHelper = require('./csvHelper');
         var zip_data=await cosHelper.getItem('hds-anonymisation',tab2.Key)
         var CsvData=zip_data.Body
         csvHelper.bufferToCSV(CsvData)
+
+        var lineReader = require('readline').createInterface({
+            input: require('fs').createReadStream('data.csv')
+        });
+          
+        lineReader.on('line', function (line) {
+            let tab=JSON.parse(line)
+            console.log(tab.user.id)
+        });
     }
     else{
         console.log("use correct input")
